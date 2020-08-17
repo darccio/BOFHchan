@@ -1,9 +1,9 @@
 package post
 
 type Post struct {
-	Id          string
-	Title       string
-	Url         string
-	Description string
-	Creator     string
+	Id          string `db:"id"`
+	Title       string `db:"title"`
+	Url         string `db:"url"`
+	Description string `db:"description"`
+	Creator     string `db:"creator_id"`
 }
