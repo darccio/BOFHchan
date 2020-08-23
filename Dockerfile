@@ -1,11 +1,9 @@
-FROM golang:1.14
+FROM golang:1.14 as build
 
 WORKDIR /go/src/github.com/imdario/bofhchan
-COPY . .
-COPY internal/ .
-COPY cmd/ .
-RUN go build -o bofhchan ./cmd/bofhchan/...
+COPY . /go/src/github.com/imdario/bofhchan
+RUN CGO_ENABLED=0 go build -ldflags '-w -extldflags "-static"' -o bofhchan -a ./cmd/bofhchan/... 
 
 FROM scratch
-COPY --from=0 /go/src/github.com/imdario/bofhchan/bofhchan /bofhchan
+COPY --from=build /go/src/github.com/imdario/bofhchan/bofhchan /bofhchan
 CMD ["/bofhchan"]
